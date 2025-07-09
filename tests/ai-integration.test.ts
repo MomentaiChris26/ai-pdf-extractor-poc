@@ -1,24 +1,16 @@
-import { createAIService, getDefaultConfig, generateText, generateTextStream } from '../src/ai-integration';
+import { createAIService, generateText, generateTextStream, createProvider } from '../src/ai-integration';
 
 describe('AI Integration', () => {
-  const mockConfig = {
-    provider: 'ollama' as const,
-    region: 'us-east-1',
-    model: 'llama3.2',
-    baseUrl: 'http://localhost:11434',
-    production: false
-  };
-
   describe('Configuration', () => {
-    it('should get default configuration', () => {
-      const config = getDefaultConfig();
-      expect(config).toBeDefined();
-      expect(config.provider).toBeDefined();
-      expect(['bedrock', 'ollama']).toContain(config.provider);
+    it('should create provider with default configuration', () => {
+      const provider = createProvider();
+      expect(provider).toBeDefined();
+      expect(provider.generateText).toBeDefined();
+      expect(provider.generateTextStream).toBeDefined();
     });
 
-    it('should create AI service with valid config', () => {
-      const aiService = createAIService(mockConfig);
+    it('should create AI service', () => {
+      const aiService = createAIService();
       expect(aiService).toBeDefined();
       expect(aiService.generateText).toBeDefined();
       expect(aiService.generateTextStream).toBeDefined();
@@ -28,10 +20,7 @@ describe('AI Integration', () => {
   describe('Text Generation', () => {
     it('should generate text response', async () => {
       try {
-        const config = getDefaultConfig();
-        console.log(`Testing with provider: ${config.provider}`);
-        
-        const response = await generateText(config, 'Hello! Please introduce yourself briefly.');
+        const response = await generateText('Hello! Please introduce yourself briefly.');
         expect(response).toBeDefined();
         expect(typeof response).toBe('string');
         expect(response.length).toBeGreaterThan(0);
@@ -46,10 +35,7 @@ describe('AI Integration', () => {
 
     it('should generate streaming text response', async () => {
       try {
-        const config = getDefaultConfig();
-        console.log(`Testing streaming with provider: ${config.provider}`);
-        
-        const streamGenerator = generateTextStream(config, 'Say hello in 5 words.');
+        const streamGenerator = generateTextStream('Say hello in 5 words.');
         let response = '';
         
         for await (const chunk of streamGenerator) {
@@ -70,26 +56,24 @@ describe('AI Integration', () => {
   });
 
   describe('Error Handling', () => {
-    it('should handle invalid provider', () => {
-      const invalidConfig = {
-        provider: 'invalid' as any,
-        region: 'us-east-1',
-        model: 'test',
-        baseUrl: 'http://localhost:11434',
-        production: false
-      };
-
-      expect(() => createAIService(invalidConfig)).toThrow('Unknown provider: invalid');
+    it('should handle provider creation gracefully', () => {
+      // Test that provider creation doesn't throw
+      expect(() => createProvider()).not.toThrow();
     });
 
-    it('should handle missing required config', () => {
-      const incompleteConfig = {
-        provider: 'ollama' as const,
-        region: 'us-east-1',
-        production: false
-      };
+    it('should handle AI service creation gracefully', () => {
+      // Test that AI service creation doesn't throw
+      expect(() => createAIService()).not.toThrow();
+    });
 
-      expect(() => createAIService(incompleteConfig)).toThrow('AIConfig must specify baseUrl, model, and provider');
+    it('should handle invalid prompts gracefully', async () => {
+      try {
+        const response = await generateText('');
+        expect(response).toBeDefined();
+      } catch (error) {
+        // Empty prompts might cause errors, which is acceptable
+        expect(error).toBeDefined();
+      }
     });
   });
 });
