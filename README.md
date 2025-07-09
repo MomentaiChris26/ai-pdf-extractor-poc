@@ -1,109 +1,103 @@
-# PdfExtractPoc
+# PDF Extract POC
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A proof of concept application that extracts qualifications and school subjects from PDF documents using AI-powered text analysis.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Features
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+- **PDF Text Extraction**: Supports both text-based PDFs (using pdf-parse) and image-based PDFs (using OCR with Tesseract)
+- **AI-Powered Analysis**: Uses AI to extract qualifications and academic subjects from extracted text
+- **Multi-Provider Support**: Supports both AWS Bedrock and Ollama for AI processing
+- **Configurable Prompts**: Prompts are stored in JSON format for easy editing without code changes
+- **Automatic Fallback**: Falls back to OCR extraction when standard PDF parsing yields minimal text
 
-## Generate a library
-
-```sh
-npx nx g @nx/js:lib packages/pkg1 --publishable --importPath=@my-org/pkg1
-```
-
-## Run tasks
-
-To build the library use:
-
-```sh
-npx nx build pkg1
-```
-
-To run any task with Nx use:
-
-```sh
-npx nx <target> <project-name>
-```
-
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
-
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Versioning and releasing
-
-To version and release the library use
+## Project Structure
 
 ```
-npx nx release
+src/
+├── ai-integration/     # AI provider implementations (Bedrock, Ollama)
+├── pdf-extract/        # PDF text extraction with OCR fallback
+├── prompts.json        # Configurable AI prompts
+└── index.ts           # Main application entry point
 ```
 
-Pass `--dry-run` to see what would happen without actually releasing the library.
+## Setup
 
-[Learn more about Nx release &raquo;](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Keep TypeScript project references up to date
-
-Nx automatically updates TypeScript [project references](https://www.typescriptlang.org/docs/handbook/project-references.html) in `tsconfig.json` files to ensure they remain accurate based on your project dependencies (`import` or `require` statements). This sync is automatically done when running tasks such as `build` or `typecheck`, which require updated references to function correctly.
-
-To manually trigger the process to sync the project graph dependencies information to the TypeScript project references, run the following command:
-
-```sh
-npx nx sync
+1. Install dependencies:
+```bash
+npm install
 ```
 
-You can enforce that the TypeScript project references are always in the correct state when running in CI by adding a step to your CI job configuration that runs the following command:
-
-```sh
-npx nx sync:check
+2. Configure environment variables:
+```bash
+cp .env.example .env
 ```
 
-[Learn more about nx sync](https://nx.dev/reference/nx-commands#sync)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+Edit `.env` with your configuration:
+```
+PRODUCTION=false
+AWS_REGION=us-east-1
+BEDROCK_MODEL=anthropic.claude-3-sonnet-20240229-v1:0
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.2
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+3. For OCR functionality, ensure you have the required dependencies installed
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## Usage
 
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+Run the application:
+```bash
+npm start
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+The application will:
+1. Extract text from the PDF at `./src/pdfs/test.pdf`
+2. Use AI to analyze the text and extract qualifications and subjects
+3. Return the results in JSON format
 
-## Install Nx Console
+## Configuration
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+### AI Providers
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **Production**: Uses AWS Bedrock (requires AWS credentials)
+- **Development**: Uses Ollama (requires local Ollama installation)
 
-## Useful links
+### Customizing Prompts
 
-Learn more:
+Edit `src/prompts.json` to modify the AI extraction prompts:
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/js?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```json
+{
+  "extractQualifications": "Your custom prompt here with {pdfText} placeholder"
+}
+```
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+## API
+
+### `extractQualifications(pdfText: string, config: AIConfig)`
+
+Returns:
+```typescript
+{
+  qualifications: string[],  // Degrees, certifications, licenses
+  subjects: string[]         // Academic subjects, courses, areas of study
+}
+```
+
+## Development
+
+Run tests:
+```bash
+npm test
+```
+
+Build:
+```bash
+npm run build
+```
+
+## Dependencies
+
+- **PDF Processing**: pdf-parse, pdf2pic, tesseract.js
+- **AI Integration**: @aws-sdk/client-bedrock-runtime, axios
+- **Development**: TypeScript, Jest, Nx
