@@ -13,7 +13,7 @@ export async function main() {
     const pdfData = await extractTextWithOCRFallback(pdfFilePath);
 
     const { qualifications = [], subjects = [] } = await extractQualAndSubjects(pdfData, config);
-    
+    console.log('data', { qualifications, subjects });
     return { qualifications, subjects };
     
   } catch (error) {

@@ -1,6 +1,7 @@
-import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
+import * as OllamaAPI from '../api/ollama-api';
+import * as BedrockAPI from '../api/bedrock-api';
 require('dotenv').config();
 
 export interface AIProvider {
@@ -50,144 +51,26 @@ export async function* generateTextStream(config: AIConfig, prompt: string, opti
 }
 
 export function createBedrockProvider(config: AIConfig): AIProvider {
-  let client: any;
-
-  const initializeClient = async () => {
-    if (!client) {
-      const { BedrockRuntimeClient } = await import('@aws-sdk/client-bedrock-runtime');
-      client = new BedrockRuntimeClient({
-        region: config.region || 'us-east-1'
-      });
-    }
-    return client;
-  };
-
-  const generateText = async (prompt: string, options?: GenerateTextOptions): Promise<string> => {
-    const { InvokeModelCommand } = await import('@aws-sdk/client-bedrock-runtime');
-    const bedrockClient = await initializeClient();
-
-    const modelId = options?.model || config.model || 'anthropic.claude-3-sonnet-20240229-v1:0';
-    const body = JSON.stringify({
-      anthropic_version: 'bedrock-2023-05-31',
-      max_tokens: options?.maxTokens || 1000,
-      temperature: options?.temperature || 0.7,
-      top_p: options?.topP || 0.9,
-      messages: [
-        {
-          role: 'user',
-          content: prompt
-        }
-      ]
-    });
-
-    const command = new InvokeModelCommand({
-      modelId,
-      body,
-      contentType: 'application/json'
-    });
-
-    const response = await bedrockClient.send(command);
-    const responseBody = JSON.parse(new TextDecoder().decode(response.body));
-
-    return responseBody.content[0].text;
-  };
-
-  const generateTextStream = async function* (prompt: string, options?: GenerateTextOptions): AsyncGenerator<string, void, unknown> {
-    const { InvokeModelWithResponseStreamCommand } = await import('@aws-sdk/client-bedrock-runtime');
-    const bedrockClient = await initializeClient();
-
-    const modelId = options?.model || config.model || 'anthropic.claude-3-sonnet-20240229-v1:0';
-    const body = JSON.stringify({
-      anthropic_version: 'bedrock-2023-05-31',
-      max_tokens: options?.maxTokens || 1000,
-      temperature: options?.temperature || 0.7,
-      top_p: options?.topP || 0.9,
-      messages: [
-        {
-          role: 'user',
-          content: prompt
-        }
-      ]
-    });
-
-    const command = new InvokeModelWithResponseStreamCommand({
-      modelId,
-      body,
-      contentType: 'application/json'
-    });
-
-    const response = await bedrockClient.send(command);
-
-    for await (const chunk of response.body!) {
-      if (chunk.chunk?.bytes) {
-        const chunkData = JSON.parse(new TextDecoder().decode(chunk.chunk.bytes));
-        if (chunkData.type === 'content_block_delta') {
-          yield chunkData.delta.text;
-        }
-      }
-    }
+  const bedrockConfig = {
+    region: config.region,
+    model: config.model
   };
 
   return {
-    generateText,
-    generateTextStream
+    generateText: (prompt: string, options?: GenerateTextOptions) => BedrockAPI.generateText(prompt, options, bedrockConfig),
+    generateTextStream: (prompt: string, options?: GenerateTextOptions) => BedrockAPI.generateTextStream(prompt, options, bedrockConfig)
   };
 }
 
 export function createOllamaProvider(config: AIConfig): AIProvider {
-  const generateText = async (prompt: string, options?: GenerateTextOptions): Promise<string> => {
-    const baseUrl = config.baseUrl;
-    const model = options?.model || config.model || 'llama3.2';
-
-    const response = await axios.post(`${baseUrl}/api/generate`, {
-      model,
-      prompt,
-      stream: false,
-      options: {
-        temperature: options?.temperature || 0.7,
-        top_p: options?.topP || 0.9,
-        num_predict: options?.maxTokens || 1000
-      }
-    });
-
-    return response.data.response;
-  };
-
-  const generateTextStream = async function* (prompt: string, options?: GenerateTextOptions): AsyncGenerator<string, void, unknown> {
-    const baseUrl = config.baseUrl;
-    const model = options?.model || config.model || 'llama3.2';
-
-    const response = await axios.post(`${baseUrl}/api/generate`, {
-      model,
-      prompt,
-      stream: true,
-      options: {
-        temperature: options?.temperature || 0.7,
-        top_p: options?.topP || 0.9,
-        num_predict: options?.maxTokens || 1000
-      }
-    }, {
-      responseType: 'stream'
-    });
-
-    for await (const chunk of response.data) {
-      const lines = chunk.toString().split('\n').filter((line: string) => line.trim());
-      for (const line of lines) {
-        try {
-          const data = JSON.parse(line);
-          if (data.response) {
-            yield data.response;
-          }
-        } catch (e) {
-          // Skip invalid JSON lines
-        }
-      }
-    }
+  const ollamaConfig = {
+    baseUrl: config.baseUrl,
+    model: config.model
   };
 
   return {
-    generateText,
-    generateTextStream
+    generateText: (prompt: string, options?: GenerateTextOptions) => OllamaAPI.generateText(prompt, options, ollamaConfig),
+    generateTextStream: (prompt: string, options?: GenerateTextOptions) => OllamaAPI.generateTextStream(prompt, options, ollamaConfig)
   };
 }
 
