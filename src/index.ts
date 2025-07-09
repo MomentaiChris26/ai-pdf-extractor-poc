@@ -1,21 +1,20 @@
-import { extractQualifications as extractQualAndSubjects, getDefaultConfig } from "./ai-integration";
-import { extractTextWithOCRFallback } from "./pdf-extract";
-require('dotenv').config();
+import extractAndRead from "./extract-and-read";
+import fs from 'fs';
+import path from 'path';
+
+const pdfDir = './src/pdfs';
 
 export async function main() {
   try {
-    const config = getDefaultConfig();
-    if (!config) {
-      throw new Error('Failed to load AI configuration');
+    const pdfFiles = fs.readdirSync(pdfDir)
+      .filter(file => file.endsWith('.pdf'))
+      .map(file => path.join(pdfDir, file));
+
+    for (const pdfFile of pdfFiles) {
+      const { qualifications, subjects } = await extractAndRead(pdfFile);
+      console.log(qualifications, subjects);
     }
 
-    const pdfFilePath = './src/pdfs/test.pdf'
-    const pdfData = await extractTextWithOCRFallback(pdfFilePath);
-
-    const { qualifications = [], subjects = [] } = await extractQualAndSubjects(pdfData, config);
-    console.log('data', { qualifications, subjects });
-    return { qualifications, subjects };
-    
   } catch (error) {
     console.error('An error occurred:', error);
     process.exit(1);

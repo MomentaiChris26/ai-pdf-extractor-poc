@@ -24,58 +24,46 @@ export interface AIConfig {
   production?: boolean;
 }
 
-export function createProvider(config: AIConfig): AIProvider {
-  if (!config.baseUrl || !config.model || !config.provider) {
-    throw new Error('AIConfig must specify baseUrl, model, and provider');
-  }
+export function createProvider(): AIProvider {
+  const isProduction = process.env.PRODUCTION ? 'bedrock' : 'ollama';
 
-
-  switch (config.provider) {
+  switch (isProduction) {
     case 'bedrock':
-      return createBedrockProvider(config);
+      return createBedrockProvider();
     case 'ollama':
-      return createOllamaProvider(config);
+      return createOllamaProvider();
     default:
-      throw new Error(`Unknown provider: ${config.provider}`);
+      throw new Error(`Unknown provider: ${isProduction}`);
   }
 }
 
-export async function generateText(config: AIConfig, prompt: string, options?: GenerateTextOptions): Promise<string> {
-  const provider = createProvider(config);
+export async function generateText(prompt: string, options?: GenerateTextOptions): Promise<string> {
+  const provider = createProvider();
   return provider.generateText(prompt, options);
 }
 
-export async function* generateTextStream(config: AIConfig, prompt: string, options?: GenerateTextOptions): AsyncGenerator<string, void, unknown> {
-  const provider = createProvider(config);
+export async function* generateTextStream(prompt: string, options?: GenerateTextOptions): AsyncGenerator<string, void, unknown> {
+  const provider = createProvider();
   yield* provider.generateTextStream(prompt, options);
 }
 
-export function createBedrockProvider(config: AIConfig): AIProvider {
-  const bedrockConfig = {
-    region: config.region,
-    model: config.model
-  };
+export function createBedrockProvider(): AIProvider {
 
   return {
-    generateText: (prompt: string, options?: GenerateTextOptions) => BedrockAPI.generateText(prompt, options, bedrockConfig),
-    generateTextStream: (prompt: string, options?: GenerateTextOptions) => BedrockAPI.generateTextStream(prompt, options, bedrockConfig)
+    generateText: (prompt: string, options?: GenerateTextOptions) => BedrockAPI.generateText(prompt, options),
+    generateTextStream: (prompt: string, options?: GenerateTextOptions) => BedrockAPI.generateTextStream(prompt, options)
   };
 }
 
-export function createOllamaProvider(config: AIConfig): AIProvider {
-  const ollamaConfig = {
-    baseUrl: config.baseUrl,
-    model: config.model
-  };
-
+export function createOllamaProvider(): AIProvider {
   return {
-    generateText: (prompt: string, options?: GenerateTextOptions) => OllamaAPI.generateText(prompt, options, ollamaConfig),
-    generateTextStream: (prompt: string, options?: GenerateTextOptions) => OllamaAPI.generateTextStream(prompt, options, ollamaConfig)
+    generateText: (prompt: string, options?: GenerateTextOptions) => OllamaAPI.generateText(prompt, options),
+    generateTextStream: (prompt: string, options?: GenerateTextOptions) => OllamaAPI.generateTextStream(prompt, options)
   };
 }
 
-export function createAIService(config: AIConfig): AIProvider {
-  return createProvider(config);
+export function createAIService(): AIProvider {
+  return createProvider();
 }
 
 function loadPrompts(): any {
@@ -84,37 +72,24 @@ function loadPrompts(): any {
   return JSON.parse(promptsData);
 }
 
-export async function extractQualifications(pdfText: string, config: AIConfig): Promise<{qualifications: string[], subjects: string[]}> {
+export async function extractQualifications(pdfText: string): Promise<{ qualifications: string[], subjects: string[] }> {
   const prompts = loadPrompts();
   const prompt = prompts.extractQualifications.replace('{pdfText}', pdfText);
 
   try {
-    const response = await generateText(config, prompt);
+    const response = await generateText(prompt);
     // More aggressive cleaning
     let cleanedResponse = response.replace(/```json\n?|\n?```/g, '').trim();
-    
+
     // Find JSON object in the response
     const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       cleanedResponse = jsonMatch[0];
     }
-    
+
     const result = JSON.parse(cleanedResponse);
     return result;
   } catch (error) {
     return { qualifications: [], subjects: [] };
   }
-}
-
-export function getDefaultConfig(): AIConfig {
-
-  const isProduction = process.env.PRODUCTION === 'true';
-
-  return {
-    provider: isProduction ? 'bedrock' : 'ollama',
-    region: process.env.AWS_REGION || 'us-east-1',
-    model: isProduction ? process.env.BEDROCK_MODEL : process.env.OLLAMA_MODEL,
-    baseUrl: process.env.OLLAMA_BASE_URL,
-    production: isProduction
-  };
 }

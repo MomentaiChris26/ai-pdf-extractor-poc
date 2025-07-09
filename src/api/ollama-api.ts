@@ -4,6 +4,10 @@ import { GenerateTextOptions } from '../ai-integration/index';
 export interface OllamaConfig {
   baseUrl: string;
   model: string;
+  temperature: number;
+  temperatureStream: number;
+  topP: number;
+  maxTokens: number;
 }
 
 export interface OllamaApiRequest {
@@ -18,9 +22,16 @@ export interface OllamaApiRequest {
 }
 
 function getConfig(config?: Partial<OllamaConfig>): OllamaConfig {
+  if (!process.env.OLLAMA_BASE_URL || !process.env.OLLAMA_MODEL || !process.env.OLLAMA_TEMPERATURE || !process.env.OLLAMA_TEMPERATURE_STREAM || !process.env.OLLAMA_TOP_P || !process.env.OLLAMA_MAX_TOKENS) {
+    throw new Error('Missing required Ollama environment variables');
+  }
   return {
-    baseUrl: config?.baseUrl || process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
-    model: config?.model || process.env.OLLAMA_MODEL || 'deepseek-r1:latest'
+    baseUrl: config?.baseUrl || process.env.OLLAMA_BASE_URL,
+    model: config?.model || process.env.OLLAMA_MODEL,
+    temperature: config?.temperature || parseFloat(process.env.OLLAMA_TEMPERATURE),
+    temperatureStream: config?.temperatureStream || parseFloat(process.env.OLLAMA_TEMPERATURE_STREAM),
+    topP: config?.topP || parseFloat(process.env.OLLAMA_TOP_P),
+    maxTokens: config?.maxTokens || parseInt(process.env.OLLAMA_MAX_TOKENS)
   };
 }
 
@@ -36,9 +47,9 @@ async function generateRequest(
     prompt,
     stream,
     options: {
-      temperature: options?.temperature || (stream ? 1 : 0.7),
-      top_p: options?.topP || 0.9,
-      num_predict: options?.maxTokens || 1000
+      temperature: options?.temperature || (stream ? ollamaConfig.temperatureStream : ollamaConfig.temperature),
+      top_p: options?.topP || ollamaConfig.topP,
+      num_predict: options?.maxTokens || ollamaConfig.maxTokens
     }
   }, stream ? {
     responseType: 'stream'
