@@ -1,0 +1,3 @@
+{
+  "extractQualifications": "Please analyze the following PDF text and extract all qualifications and school subjects mentioned. Return ONLY a valid JSON object with the format {\"qualifications\": [\"qualification1\", \"qualification2\", ...], \"subjects\": [\"subject1\", \"subject2\", ...]}. Extract degrees, certifications, licenses, and other professional qualifications. For subjects, extract academic subjects, courses, areas of study, and educational topics. Do not include any other text or formatting.\n\nPDF Text:\n{pdfText}"
+}
