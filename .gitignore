@@ -50,4 +50,4 @@ Thumbs.db
 .env.test.local
 
 # PDF files
-src/pdfs
+src/pdfs/
