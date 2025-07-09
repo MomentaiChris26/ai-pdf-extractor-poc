@@ -1,4 +1,4 @@
-import { extractQualifications, getDefaultConfig } from "./ai-integration";
+import { extractQualifications as extractQualAndSubjects, getDefaultConfig } from "./ai-integration";
 import { extractTextWithOCRFallback } from "./pdf-extract";
 require('dotenv').config();
 
@@ -12,7 +12,7 @@ export async function main() {
     const pdfFilePath = './src/pdfs/test.pdf'
     const pdfData = await extractTextWithOCRFallback(pdfFilePath);
 
-    const { qualifications = [], subjects = [] } = await extractQualifications(pdfData, config);
+    const { qualifications = [], subjects = [] } = await extractQualAndSubjects(pdfData, config);
     
     return { qualifications, subjects };
     
