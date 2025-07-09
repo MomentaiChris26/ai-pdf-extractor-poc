@@ -48,3 +48,6 @@ Thumbs.db
 .env.local
 .env.development.local
 .env.test.local
+
+# PDF files
+src/pdfs
