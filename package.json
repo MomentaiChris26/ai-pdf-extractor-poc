@@ -11,8 +11,11 @@
   "private": true,
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.842.0",
+    "@langchain/community": "^0.3.49",
+    "@langchain/core": "^0.3.66",
     "axios": "^1.10.0",
     "dotenv": "^17.1.0",
+    "langchain": "^0.3.30",
     "pdf-parse": "^1.1.1",
     "pdf2pic": "^3.2.0",
     "tesseract.js": "^6.0.1"

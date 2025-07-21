@@ -1,22 +1,68 @@
-import extractAndRead from "./extract-and-read";
-import fs from 'fs';
-import path from 'path';
+import { extractTextWithOCRFallback } from './pdf-extract';
+import { classifyAndAction } from './ai-integration';
+import { ActionProcessor, ProcessedResult } from './actions/processor';
+import { processDocumentActions } from './langchain/agent';
 
-const pdfDir = './src/pdfs';
+export interface FullProcessingResult {
+  raw_text: string;
+  classification: any;
+  processed_result: ProcessedResult;
+  processing_time: number;
+}
 
-export async function main() {
+export async function processDocument(filePath: string): Promise<FullProcessingResult> {
+  const startTime = Date.now();
+  
   try {
-    const pdfFiles = fs.readdirSync(pdfDir)
-      .filter(file => file.endsWith('.pdf'))
-      .map(file => path.join(pdfDir, file));
-    for (const pdfFile of pdfFiles) {
-      const resultObj = await extractAndRead(pdfFile);
-      console.log(pdfFile, resultObj);
+    // Step 1: Extract text from PDF
+    console.log('🔍 Extracting text from PDF...');
+    const rawText = await extractTextWithOCRFallback(filePath);
+    
+    // Step 2: Classify document and get additional actions
+    console.log('📋 Classifying document...');
+    const classification = await classifyAndAction(rawText);
+    
+    // Step 3: Process additional actions if needed
+    console.log('⚙️ Processing additional actions...');
+    const actions = ActionProcessor.parseActions(classification.additional_action);
+    
+    let processedResult: ProcessedResult;
+    
+    if (ActionProcessor.requiresProcessing(actions)) {
+      console.log(`🤖 Processing actions: ${actions.join(', ')}`);
+      processedResult = await processDocumentActions(rawText, actions, classification);
+    } else {
+      console.log('✅ No additional processing required');
+      processedResult = {
+        ...classification,
+        processing_completed: true
+      };
     }
-
+    
+    const processingTime = Date.now() - startTime;
+    
+    console.log(`✨ Processing completed in ${processingTime}ms`);
+    
+    return {
+      raw_text: rawText,
+      classification,
+      processed_result: processedResult,
+      processing_time: processingTime
+    };
+    
   } catch (error) {
-    console.error('An error occurred:', error);
-    process.exit(1);
+    console.error('❌ Pipeline error:', error);
+    throw error;
   }
 }
-export default main;
+
+// Main function for CLI usage
+export async function processPDF(filePath: string): Promise<FullProcessingResult> {
+  return await processDocument(filePath);
+}
+
+// Export for library usage
+export { ActionProcessor, processDocumentActions };
+export type { ClassificationResult } from './ai-integration/types';
+export type { ProcessedResult } from './actions/processor';
+
