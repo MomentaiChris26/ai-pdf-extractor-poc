@@ -2,19 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import * as OllamaAPI from '../api/ollama-api';
 import * as BedrockAPI from '../api/bedrock-api';
+import { AIProvider, ClassificationResult, GenerateTextOptions } from './types';
+import { VALID_DOCUMENT_TYPES } from './constants';
 require('dotenv').config();
-
-export interface AIProvider {
-  generateText(prompt: string, options?: GenerateTextOptions): Promise<string>;
-  generateTextStream(prompt: string, options?: GenerateTextOptions): AsyncGenerator<string, void, unknown>;
-}
-
-export interface GenerateTextOptions {
-  maxTokens?: number;
-  temperature?: number;
-  topP?: number;
-  model?: string;
-}
 
 export interface AIConfig {
   provider: 'bedrock' | 'ollama';
@@ -27,6 +17,7 @@ export interface AIConfig {
 export function createProvider(): AIProvider {
   const isProduction = process.env.PRODUCTION ? 'bedrock' : 'ollama';
 
+  return createOllamaProvider();
   switch (isProduction) {
     case 'bedrock':
       return createBedrockProvider();
@@ -72,24 +63,50 @@ function loadPrompts(): any {
   return JSON.parse(promptsData);
 }
 
-export async function extractQualifications(pdfText: string): Promise<{ qualifications: string[], subjects: string[] }> {
+
+// Legacy function - use classifyAndAction instead
+export async function classifyPdfDocument(pdfText: string): Promise<ClassificationResult> {
+  const result = await classifyAndAction(pdfText);
+  return result;
+}
+
+export async function classifyAndAction(pdfText: string): Promise<ClassificationResult> {
   const prompts = loadPrompts();
-  const prompt = prompts.extractQualifications.replace('{pdfText}', pdfText);
+  const prompt = prompts.classifyPdfDocument.replace('{pdfText}', pdfText);
 
   try {
     const response = await generateText(prompt);
-    // More aggressive cleaning
     let cleanedResponse = response.replace(/```json\n?|\n?```/g, '').trim();
 
-    // Find JSON object in the response
     const jsonMatch = cleanedResponse.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       cleanedResponse = jsonMatch[0];
     }
 
     const result = JSON.parse(cleanedResponse);
-    return result;
+    
+    const classification = VALID_DOCUMENT_TYPES.includes(result.classification) ? result.classification : 'unknown';
+    
+    const language = result.language || 'unknown';
+    let additionalAction = result.additional_action || 'Document requires manual review';
+
+    if (classification === 'unknown' || result.origin === 'Unknown') {
+      additionalAction += ', manual_verification';
+    }
+
+    return {
+      classification,
+      additional_action: additionalAction,
+      language,
+      origin: result.origin || 'Unknown'
+    };
   } catch (error) {
-    return { qualifications: [], subjects: [] };
+    console.error('Error classifying PDF document:', error);
+    return {
+      classification: 'other',
+      additional_action: 'Classification failed - document requires manual review',
+      language: 'unknown',
+      origin: 'Unknown'
+    };
   }
 }

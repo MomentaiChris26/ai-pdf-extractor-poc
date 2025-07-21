@@ -9,10 +9,9 @@ export async function main() {
     const pdfFiles = fs.readdirSync(pdfDir)
       .filter(file => file.endsWith('.pdf'))
       .map(file => path.join(pdfDir, file));
-
     for (const pdfFile of pdfFiles) {
-      const { qualifications, subjects } = await extractAndRead(pdfFile);
-      console.log(qualifications, subjects);
+      const resultObj = await extractAndRead(pdfFile);
+      console.log(pdfFile, resultObj);
     }
 
   } catch (error) {

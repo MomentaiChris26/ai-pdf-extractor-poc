@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GenerateTextOptions } from '../ai-integration/index';
+import { GenerateTextOptions } from '../ai-integration/types';
 
 export interface OllamaConfig {
   baseUrl: string;

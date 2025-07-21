@@ -1,0 +1,1 @@
+export const VALID_DOCUMENT_TYPES = ['transcript', 'certificate', 'diploma', 'license', 'report', 'letter', 'form', 'other'];

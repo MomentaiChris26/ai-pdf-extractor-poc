@@ -1,4 +1,4 @@
-import { GenerateTextOptions } from '../ai-integration/index';
+import { GenerateTextOptions } from '../ai-integration/types';
 
 export interface BedrockConfig {
   region: string;

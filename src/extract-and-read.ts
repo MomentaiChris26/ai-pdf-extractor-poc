@@ -1,17 +1,12 @@
-import { extractQualifications as extractQualAndSubjects } from "./ai-integration";
+import { classifyAndAction } from "./ai-integration";
+import { ClassificationResult } from "./ai-integration/types";
 import { extractTextWithOCRFallback } from "./pdf-extract";
 require('dotenv').config();
 
-interface Result {
-  qualifications: string[];
-  subjects: string[];
-}
-
-const ExtractAndRead = async (filePath: string): Promise<Result> => {
+const ExtractAndRead = async (filePath: string): Promise<ClassificationResult> => {
   try {
     const pdfData = await extractTextWithOCRFallback(filePath);
-    const { qualifications = [], subjects = [] } = await extractQualAndSubjects(pdfData);
-    return { qualifications, subjects };
+    return classifyAndAction(pdfData);
   } catch (error) {
     console.error('An error occurred:', error);
     process.exit(1);
