@@ -2,9 +2,9 @@ import { extractTextWithOCRFallback } from './pdf-extract';
 import { classifyAndAction } from './ai-integration';
 import { ActionProcessor, ProcessedResult } from './actions/processor';
 import { processDocumentActions } from './langchain/agent';
+import { processDocumentActionsWithGraph } from './langchain/graph-agent';
 
 export interface FullProcessingResult {
-  raw_text: string;
   classification: any;
   processed_result: ProcessedResult;
   processing_time: number;
@@ -29,8 +29,8 @@ export async function processDocument(filePath: string): Promise<FullProcessingR
     let processedResult: ProcessedResult;
     
     if (ActionProcessor.requiresProcessing(actions)) {
-      console.log(`🤖 Processing actions: ${actions.join(', ')}`);
-      processedResult = await processDocumentActions(rawText, actions, classification);
+      console.log(`🤖 Processing actions with LangGraph: ${actions.join(', ')}`);
+      processedResult = await processDocumentActionsWithGraph(rawText, actions, classification);
     } else {
       console.log('✅ No additional processing required');
       processedResult = {
@@ -44,7 +44,6 @@ export async function processDocument(filePath: string): Promise<FullProcessingR
     console.log(`✨ Processing completed in ${processingTime}ms`);
     
     return {
-      raw_text: rawText,
       classification,
       processed_result: processedResult,
       processing_time: processingTime
@@ -62,7 +61,7 @@ export async function processPDF(filePath: string): Promise<FullProcessingResult
 }
 
 // Export for library usage
-export { ActionProcessor, processDocumentActions };
+export { ActionProcessor, processDocumentActions, processDocumentActionsWithGraph };
 export type { ClassificationResult } from './ai-integration/types';
 export type { ProcessedResult } from './actions/processor';
 

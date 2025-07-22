@@ -9,7 +9,6 @@ export async function processDocumentActions(
   try {
     const processed: any = {};
     
-    // Process each action sequentially
     for (const action of actions) {
       if (action.includes('translate')) {
         console.log('🔄 Translating document...');
