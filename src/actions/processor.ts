@@ -22,7 +22,7 @@ export class ActionProcessor {
     const processableActions = [
       'translate',
       'translate_to_english', 
-      'extract_subjects_and_grades',
+      'extract_subjects',
       'manual_verification'
     ];
     
@@ -35,7 +35,7 @@ export class ActionProcessor {
     const toolMap: Record<string, string> = {
       'translate': 'translator',
       'translate_to_english': 'translator',
-      'extract_subjects_and_grades': 'extract_subjects_and_grades',
+      'extract_subjects': 'extract_subjects',
       'manual_verification': 'manual_verification'
     };
 
@@ -61,7 +61,7 @@ You need to perform the following actions: ${actionsList}
 
 Available tools:
 - translator: Translate text to English
-- extract_subjects_and_grades: Extract academic subjects and grades
+- extract_subjects: Extract academic subjects and grades
 - manual_verification: Create verification report
 
 Document text:

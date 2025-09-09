@@ -1,5 +1,6 @@
 import { translateText, extractSubjectsAndGrades, createManualVerificationReport } from './tools';
 import { ProcessedResult } from '../actions/processor';
+import logger from '../utils/logger';
 
 export async function processDocumentActions(
   documentText: string, 
@@ -11,18 +12,18 @@ export async function processDocumentActions(
     
     for (const action of actions) {
       if (action.includes('translate')) {
-        console.log('🔄 Translating document...');
+        logger.info('🔄 Translating document...');
         processed.translated_text = await translateText(documentText);
       }
       
       if (action.includes('extract_subjects')) {
-        console.log('📊 Extracting subjects and grades...');
+        logger.info('📊 Extracting subjects and grades...');
         const extractedData = await extractSubjectsAndGrades(documentText);
         processed.extracted_subjects = parseJSONSection(extractedData);
       }
       
       if (action.includes('manual_verification')) {
-        console.log('📋 Creating verification report...');
+        logger.info('📋 Creating verification report...');
         processed.verification_report = await createManualVerificationReport(documentText);
       }
     }

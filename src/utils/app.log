@@ -1,0 +1,109 @@
+{"level":"INFO","time":"2025-07-24T01:20:36.515Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-07-24T01:20:36.528Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-07-24T01:20:36.636Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-07-24T01:20:36.663Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-07-24T01:20:51.121Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-07-24T01:20:51.121Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-07-24T01:20:51.135Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-07-24T01:20:54.057Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-07-24T01:20:54.057Z","msg":"🤖 Processing actions with LangGraph: translate_to_english, extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-07-24T01:20:54.064Z","msg":"🔄 Translating document..."}
+{"level":"INFO","time":"2025-07-24T01:21:54.199Z","msg":"✨ Processing completed in 77671ms"}
+{"level":"INFO","time":"2025-07-24T01:21:54.199Z","msg":"{\n  \"classification\": {\n    \"classification\": \"transcript\",\n    \"additional_action\": \"extract_subjects_and_grades\",\n    \"language\": \"Chinese\",\n    \"origin\": \"China\"\n  },\n  \"processed_result\": {\n    \"classification\": \"transcript\",\n    \"additional_action\": \"extract_subjects_and_grades\",\n    \"language\": \"Chinese\",\n    \"origin\": \"China\",\n    \"processed_data\": {\n      \"extracted_subjects\": []\n    },\n    \"processing_completed\": true\n  },\n  \"processing_time\": 77671\n}"}
+{"level":"INFO","time":"2025-07-24T01:21:54.597Z","msg":"✨ Processing completed in 78082ms"}
+{"level":"INFO","time":"2025-07-24T01:21:54.597Z","msg":"{\n  \"classification\": {\n    \"classification\": \"certificate\",\n    \"additional_action\": \"translate_to_english, extract_subjects_and_grades\",\n    \"language\": \"English\",\n    \"origin\": \"India\"\n  },\n  \"processed_result\": {\n    \"classification\": \"certificate\",\n    \"additional_action\": \"translate_to_english, extract_subjects_and_grades\",\n    \"language\": \"English\",\n    \"origin\": \"India\",\n    \"processed_data\": {\n      \"translated_text\": \"OFFICIAL TRANSCRIPT CERTIFICATE\\n\\nThis is to certify and confirm that Mr./Ms. __________________________ with Provisional Registration No. ________________ and Permanent Registration No._____________has been awarded Ayurvedacharya (Bachelor of Ayurvedic Medicine and Surgery (B.A.M.S) Degree by this University. This Degree is recognized by the National Commission for Indian System of Medicine (NCISM), New Delhi. \\n\\nThe student was a bonafide student of___________(Collegename)______________from ____(dd/mm/yy) ____ to______(dd/mm/yy) _______and completed the College education course curriculum of four years and six months through regular Lectures / Seminars / Practical / Clinical etc. during the said period. The student completed the compulsory rotatory internship towards ‘Experiential Learning’ from_____(dd/mm/yy)_______to _____(dd/mm/yy)______ in the hospitals as required under rules prescribed by the NCISM and the same accepted by this University. \\n\\nThe medium of instruction for the course was ______________ \\n\\nThe student has fulfilled the criteria for attendance in theory and practical examinations, as per NCISM and University norms. \\n\\nDate: \\n\\nUniversity Seal         Official Stamp \\n\\n1. Basic Data \\n1. Name of the student \\nPhotograph of the candidate \\n2. Gender \\n3. Date of Birth \\n4. Nationality \\n5. Father name and Mother name (as per University records) \\n6. Permanent Address \\n7. Name of the Course \\n8. Name and address of the Institution studied \\n\\n9. University Registration No \\n10. Duration of the Course \\n11. Period of course From……/MM/YYYY                     To……. /MM/YYYY. \\n12. Medium of Instruction \\n13. Internship duration From..........DD/MM/YYYY                     To……. DD/MM/YYYY. \\n14. Degree Awarded by University name \\n\\n2. Academic Details \\n\\nS.no. Subject code \\nSubject name and its equivalent terms \\nPrescribed Hours \\nLectures (Theory) \\nNon-lectures including \\nPractical/Clinical hours \\nFirst Professional (18 months) \\n1.  AYUG-SN and AI Samskritam evam Ayurved Itihas (Sanskrit and History of Ayurveda) 100 200 \\n2.  AYUG-PV Padartha Vigyan (Fundamental Principles of Ayurveda and Quantum Mechanics) 90 140 \\n3.  AYUG-KS Kriya Sharira (Human Physiology) 150 250 \\n4.  AYUG-RS Rachana Sharira (Human Anatomy) 180 320 \\n5.  AYUG-SA-1 Samhita Adhyayana-1 (Study of Ayurveda Text) 140 260 \\nSecond Professional (18 months) \\n1.  AYUG-DG Dravyaguna Vigyan (Pharmacology and Materia Medica-herbal 150 250 \\n2.  AYUG-RB Rasashastra evam Bhaishajya Kalpana (Materia Medica- mineral & Metals and Pharmaceutical Science) 150 300 \\n3.  AYUG-RN Roganidan evam Vikriti Vigyan (Methods of Diagnostic Procedures and Pathology) 150 300 \\n4.  AYUG-AT Agad Tantra evam Vidhi Vaidhyka (Clinical Toxicology and Medical Jurisprudence) 100 200 \\n5.  AYUG-SA-2 Samhita Adhyayana -2 (Study of Ayurveda Text) 100 140 \\n6.  AYUG-SW Swasthavritta evam Yoga (Public health and life style Medicine) 150 250 \\nThird Professional (18 months) \\n1.  AYUG-KC Kaya Chikitsa including Manas roga, Rasayana and Vajikarana (Internal Medicine including Psychiatry, Rejuvenative Medicine, Reproductive Medicine and Epigenetics) 150 300 \\n2.  AYUG-PK Panchkarma and Upkarma (Ayurvedic Therapeutic Procedures) 100 200 \\n3.  AYUG-ST Shalya Tantra (General Surgery) 125 250 \\n4.  AYUG-SL Shalakya Tantra (Ophthalmology, Oto-Rhino-Laryngology & Oro-Dentistry) 100 200 \\n5.  AYUG-PS Prasuti evam Stri roga (Obstetrics and Gynaecology)\"\n    },\n    \"processing_completed\": true\n  },\n  \"processing_time\": 78082\n}"}
+{"level":"INFO","time":"2025-07-24T01:22:26.727Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-07-24T01:22:26.740Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-07-24T01:22:26.848Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-07-24T01:22:26.876Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-07-24T01:22:40.897Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-07-24T01:22:40.897Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-07-24T01:22:40.911Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-07-24T01:23:58.063Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-07-24T01:23:58.076Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-07-24T01:23:58.179Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-07-24T01:23:58.207Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-07-24T01:24:12.223Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-07-24T01:24:12.223Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-07-24T01:24:12.239Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-07-24T01:24:15.162Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-07-24T01:24:15.162Z","msg":"🤖 Processing actions with LangGraph: translate_to_english, extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-07-24T01:24:15.168Z","msg":"🔄 Translating document..."}
+{"level":"INFO","time":"2025-07-24T01:25:15.061Z","msg":"✨ Processing completed in 76985ms"}
+{"level":"INFO","time":"2025-07-24T01:25:15.062Z","msg":"✅ Processed src/pdfs/sample-transcript-en.pdf successfully. Result saved to src/pdfs/sample-transcript-en-result.json"}
+{"level":"INFO","time":"2025-07-24T01:25:15.413Z","msg":"✨ Processing completed in 77351ms"}
+{"level":"INFO","time":"2025-07-24T01:25:15.414Z","msg":"✅ Processed src/pdfs/india-transcript-example.pdf successfully. Result saved to src/pdfs/india-transcript-example-result.json"}
+{"level":"INFO","time":"2025-09-09T06:49:58.137Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T06:49:58.152Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T06:49:58.256Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T06:49:58.284Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T06:50:10.168Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T06:50:10.170Z","msg":"🤖 Processing actions with LangGraph: translate_to_english, extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T06:50:10.188Z","msg":"🔄 Translating document..."}
+{"level":"INFO","time":"2025-09-09T06:50:14.307Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T06:50:14.307Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T06:50:14.326Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T06:50:49.863Z","msg":"✨ Processing completed in 51726ms"}
+{"level":"INFO","time":"2025-09-09T06:50:49.865Z","msg":"✅ Processed src/pdfs/india-transcript-example.pdf successfully. Result saved to src/pdfs/india-transcript-example-result.json"}
+{"level":"INFO","time":"2025-09-09T06:51:20.890Z","msg":"✨ Processing completed in 82738ms"}
+{"level":"INFO","time":"2025-09-09T06:51:20.891Z","msg":"✅ Processed src/pdfs/sample-transcript-en.pdf successfully. Result saved to src/pdfs/sample-transcript-en-result.json"}
+{"level":"INFO","time":"2025-09-09T06:51:28.818Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T06:51:28.832Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T06:51:28.927Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T06:51:28.955Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T06:53:32.228Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T06:53:32.242Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T06:53:32.333Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T06:53:32.363Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:06:47.918Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:06:47.998Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:07:04.064Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:07:04.065Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T07:07:04.086Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T07:07:39.253Z","msg":"✨ Processing completed in 51335ms"}
+{"level":"INFO","time":"2025-09-09T07:07:39.254Z","msg":"✅ Processed src/pdfs/chris tri - vet transcript.pdf successfully. Result saved to src/pdfs/chris tri - vet transcript-result.json"}
+{"level":"INFO","time":"2025-09-09T07:13:46.176Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:13:46.254Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:14:01.377Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:14:01.377Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T07:14:01.389Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T07:14:41.172Z","msg":"✨ Processing completed in 54997ms"}
+{"level":"INFO","time":"2025-09-09T07:14:41.172Z","msg":"✅ Processed src/pdfs/chris tri - vet transcript.pdf successfully. Result saved to src/pdfs/chris tri - vet transcript-result.json"}
+{"level":"INFO","time":"2025-09-09T07:16:06.131Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:16:06.229Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:16:19.842Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:16:19.843Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T07:16:19.874Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T07:16:59.298Z","msg":"✨ Processing completed in 53167ms"}
+{"level":"INFO","time":"2025-09-09T07:16:59.298Z","msg":"✅ Processed src/pdfs/chris tri - vet transcript.pdf successfully. Result saved to src/pdfs/chris tri - vet transcript-result.json"}
+{"level":"INFO","time":"2025-09-09T07:17:25.502Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:17:25.584Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:17:38.870Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:17:38.871Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T07:17:38.902Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T07:18:20.437Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:18:20.514Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:18:33.849Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:18:33.849Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T07:18:33.865Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T07:19:13.481Z","msg":"✨ Processing completed in 53045ms"}
+{"level":"INFO","time":"2025-09-09T07:19:13.482Z","msg":"✅ Processed src/pdfs/chris tri - vet transcript.pdf successfully. Result saved to src/pdfs/chris tri - vet transcript-result.json"}
+{"level":"INFO","time":"2025-09-09T07:19:38.656Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:19:38.734Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:19:52.029Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:19:52.029Z","msg":"🤖 Processing actions with LangGraph: extract_subjects_and_grades"}
+{"level":"INFO","time":"2025-09-09T07:19:52.043Z","msg":"📊 Extracting subjects and grades..."}
+{"level":"INFO","time":"2025-09-09T07:20:31.753Z","msg":"✨ Processing completed in 53098ms"}
+{"level":"INFO","time":"2025-09-09T07:20:31.753Z","msg":"✅ Processed src/pdfs/chris tri - vet transcript.pdf successfully. Result saved to src/pdfs/chris tri - vet transcript-result.json"}
+{"level":"INFO","time":"2025-09-09T07:20:58.837Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:20:58.919Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:21:12.266Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:21:12.267Z","msg":"🤖 Processing actions with LangGraph: translate_to_english, extract_subjects"}
+{"level":"INFO","time":"2025-09-09T07:21:12.286Z","msg":"🔄 Translating document..."}
+{"level":"INFO","time":"2025-09-09T07:21:51.196Z","msg":"✨ Processing completed in 52360ms"}
+{"level":"INFO","time":"2025-09-09T07:21:51.196Z","msg":"✅ Processed src/pdfs/chris tri - vet transcript.pdf successfully. Result saved to src/pdfs/chris tri - vet transcript-result.json"}
+{"level":"INFO","time":"2025-09-09T07:22:13.647Z","msg":"🔍 Extracting text from PDF..."}
+{"level":"INFO","time":"2025-09-09T07:22:13.731Z","msg":"📋 Classifying document..."}
+{"level":"INFO","time":"2025-09-09T07:22:27.260Z","msg":"⚙️ Processing additional actions..."}
+{"level":"INFO","time":"2025-09-09T07:22:27.260Z","msg":"🤖 Processing actions with LangGraph: translate_to_english, extract_subjects"}
+{"level":"INFO","time":"2025-09-09T07:22:27.274Z","msg":"🔄 Translating document..."}

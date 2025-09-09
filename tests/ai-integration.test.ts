@@ -1,4 +1,5 @@
 import { createAIService, generateText, generateTextStream, createProvider, classifyAndAction } from '../src/ai-integration';
+import logger from '../src/utils/logger';
 
 describe('AI Integration', () => {
   describe('Configuration', () => {
@@ -25,9 +26,9 @@ describe('AI Integration', () => {
         expect(typeof response).toBe('string');
         expect(response.length).toBeGreaterThan(0);
         
-        console.log('AI Response:', response);
+        logger.info('AI Response:', response);
       } catch (error) {
-        console.error('Error generating AI response:', error);
+        logger.error('Error generating AI response:', error);
         // Don't fail the test if the AI service is not available
         expect(error).toBeDefined();
       }
@@ -46,9 +47,9 @@ describe('AI Integration', () => {
         expect(response).toBeDefined();
         expect(typeof response).toBe('string');
         
-        console.log('AI Streaming Response:', response);
+        logger.info('AI Streaming Response:', response);
       } catch (error) {
-        console.error('Error generating streaming AI response:', error);
+        logger.error('Error generating streaming AI response:', error);
         // Don't fail the test if the AI service is not available
         expect(error).toBeDefined();
       }
@@ -81,9 +82,9 @@ describe('AI Integration', () => {
         expect(result.additional_action).toBeDefined();
         expect(typeof result.additional_action).toBe('string');
         
-        console.log('Classification result:', result);
+        logger.info('Classification result:', result);
       } catch (error) {
-        console.error('Error classifying transcript:', error);
+        logger.error('Error classifying transcript:', error);
         expect(error).toBeDefined();
       }
     }, 30000);
@@ -111,7 +112,7 @@ describe('AI Integration', () => {
         expect(result.type).toBe('certificate');
         expect(result.additional_action).toBeDefined();
         
-        console.log('Classification result:', result);
+        logger.info('Classification result:', result);
       } catch (error) {
         console.error('Error classifying certificate:', error);
         expect(error).toBeDefined();
@@ -131,7 +132,7 @@ describe('AI Integration', () => {
         expect(result.type).toBeDefined();
         expect(result.additional_action).toBeDefined();
         
-        console.log('Classification result for unknown:', result);
+        logger.info('Classification result for unknown:', result);
       } catch (error) {
         console.error('Error classifying unknown document:', error);
         expect(error).toBeDefined();

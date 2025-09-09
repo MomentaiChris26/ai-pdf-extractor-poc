@@ -1,6 +1,8 @@
 import { translateText, extractSubjectsAndGrades, createManualVerificationReport } from './tools';
 import { ProcessedResult } from '../actions/processor';
 import { StateGraph, END, START, Annotation } from '@langchain/langgraph';
+import logger from '../utils/logger';
+
 
 const DocumentStateAnnotation = Annotation.Root({
   documentText: Annotation<string>,
@@ -18,19 +20,19 @@ const processAction = async (state: DocumentState): Promise<Partial<DocumentStat
   const updates: any = { processed: { ...state.processed } };
   
   if (action?.includes('translate')) {
-    console.log('🔄 Translating document...');
+    logger.info('🔄 Translating document...');
     const translated_text = await translateText(state.documentText);
     updates.processed.translated_text = translated_text;
   }
   
   if (action?.includes('extract_subjects')) {
-    console.log('📊 Extracting subjects and grades...');
+    logger.info('📊 Extracting subjects and grades...');
     const extractedData = await extractSubjectsAndGrades(state.documentText);
     updates.processed.extracted_subjects = parseJSONSection(extractedData);
   }
   
   if (action?.includes('manual_verification')) {
-    console.log('📋 Creating verification report...');
+    logger.info('📋 Creating verification report...');
     const verification_report = await createManualVerificationReport(state.documentText);
     updates.processed.verification_report = verification_report;
   }

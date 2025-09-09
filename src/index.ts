@@ -3,6 +3,7 @@ import { classifyAndAction } from './ai-integration';
 import { ActionProcessor, ProcessedResult } from './actions/processor';
 import { processDocumentActions } from './langchain/agent';
 import { processDocumentActionsWithGraph } from './langchain/graph-agent';
+import logger from './utils/logger';
 
 export interface FullProcessingResult {
   classification: any;
@@ -12,27 +13,30 @@ export interface FullProcessingResult {
 
 export async function processDocument(filePath: string): Promise<FullProcessingResult> {
   const startTime = Date.now();
+  console.log('run')
   
   try {
     // Step 1: Extract text from PDF
-    console.log('🔍 Extracting text from PDF...');
+    logger.info('🔍 Extracting text from PDF...');
     const rawText = await extractTextWithOCRFallback(filePath);
+    console.log(rawText)
     
     // Step 2: Classify document and get additional actions
-    console.log('📋 Classifying document...');
+    logger.info('📋 Classifying document...');
     const classification = await classifyAndAction(rawText);
     
     // Step 3: Process additional actions if needed
-    console.log('⚙️ Processing additional actions...');
+    logger.info('⚙️ Processing additional actions...');
+    console.log(classification.additional_action)
     const actions = ActionProcessor.parseActions(classification.additional_action);
     
     let processedResult: ProcessedResult;
     
     if (ActionProcessor.requiresProcessing(actions)) {
-      console.log(`🤖 Processing actions with LangGraph: ${actions.join(', ')}`);
+      logger.info(`🤖 Processing actions with LangGraph: ${actions.join(', ')}`);
       processedResult = await processDocumentActionsWithGraph(rawText, actions, classification);
     } else {
-      console.log('✅ No additional processing required');
+      logger.info('✅ No additional processing required');
       processedResult = {
         ...classification,
         processing_completed: true
@@ -41,7 +45,7 @@ export async function processDocument(filePath: string): Promise<FullProcessingR
     
     const processingTime = Date.now() - startTime;
     
-    console.log(`✨ Processing completed in ${processingTime}ms`);
+    logger.info(`✨ Processing completed in ${processingTime}ms`);
     
     return {
       classification,
@@ -50,7 +54,7 @@ export async function processDocument(filePath: string): Promise<FullProcessingR
     };
     
   } catch (error) {
-    console.error('❌ Pipeline error:', error);
+    logger.error({ err: error }, '❌ Pipeline error');
     throw error;
   }
 }

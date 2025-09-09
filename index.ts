@@ -1,6 +1,7 @@
 import { processDocument } from './src';
 import fs from 'fs';
 import path from 'path';
+import logger from './src/utils/logger';
 
 const pdfDir = './src/pdfs';
 
@@ -12,7 +13,10 @@ async function run() {
   for (const pdfFile of pdfFiles) {
     processDocument(pdfFile)
       .then(result => {
-        console.log(JSON.stringify(result, null, 2));
+        // Save result to a JSON file
+        const outputFile = path.join(pdfDir, `${path.basename(pdfFile, '.pdf')}-result.json`);
+        fs.writeFileSync(outputFile, JSON.stringify(result, null, 2));
+        logger.info(`✅ Processed ${pdfFile} successfully. Result saved to ${outputFile}`);
       })
       .catch(error => {
         console.error('❌ Error:', error);

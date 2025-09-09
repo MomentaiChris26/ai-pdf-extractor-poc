@@ -7,9 +7,9 @@ export async function extractSubjectsAndGrades(input: string): Promise<string> {
 [
   {
     "subject": "Course Name",
+    "subject_code": "Course Code e.g. (FNSINC501A)",
     "grade": "Grade/Score",
-    "credits": "Credit Hours (if available)",
-    "semester": "Semester/Term (if available)"
+    "enrolment_period": "dates"
   }
 ]
 
@@ -18,6 +18,7 @@ If GPA is mentioned, include it as a separate field. Only return the JSON, no ex
 ${input}`;
 
     const extractedData = await generateText(prompt);
+    console.log('Extracted Data:', extractedData);
     return extractedData.trim();
   } catch (error) {
     console.error('Extraction error:', error);
